@@ -59,13 +59,26 @@ const countXmas = (x: number, y: number) => {
   return count;
 };
 
+const getXLetters = (x: number, y: number) =>
+  [
+    matrix[y - 1]?.[x - 1],
+    matrix[y + 1]?.[x - 1],
+    matrix[y - 1]?.[x + 1],
+    matrix[y + 1]?.[x + 1],
+  ].join("");
+const orders = ["MMSS", "MSMS", "SSMM", "SMSM"];
+
 let total = 0;
+let total2 = 0;
 for (let y = 0; y < matrix.length; y++) {
   for (let x = 0; x < matrix[y].length; x++) {
     if (matrix[y][x] === "X") {
       total += countXmas(x, y);
+    } else if (matrix[y][x] === "A" && orders.includes(getXLetters(x, y))) {
+      total2++;
     }
   }
 }
 
 printPart(1, total);
+printPart(2, total2);
