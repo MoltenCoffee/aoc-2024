@@ -14,6 +14,11 @@ export const getInputLines = async (day: number): Promise<Array<string>> =>
     .split("\n")
     .map((line) => line.trim());
 
+export const getInputGroups = async (day: number): Promise<Array<string>> =>
+  (await openInput(`input/day${day}.txt`))
+    .split("\n\n")
+    .map((line) => line.trim());
+
 export const printPart = (part: number, result: number) => {
   console.log(`Part ${part}: ${result}`);
 };
