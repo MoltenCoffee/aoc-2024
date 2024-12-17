@@ -1,23 +1,20 @@
-import { PathLike } from "node:fs";
 import { readFile } from "node:fs/promises";
 
+export const getPath = (day: number): string => `input/day${day}.txt`;
+
 export const openInput = async (
-  path: PathLike,
+  day: number,
   trim: Boolean = true
 ): Promise<String> => {
-  const data = await readFile(path, "utf-8");
+  const data = await readFile(getPath(day), "utf-8");
   return trim ? data.trim() : data;
 };
 
 export const getInputLines = async (day: number): Promise<Array<string>> =>
-  (await openInput(`input/day${day}.txt`))
-    .split("\n")
-    .map((line) => line.trim());
+  (await openInput(day)).split("\n").map((line) => line.trim());
 
 export const getInputGroups = async (day: number): Promise<Array<string>> =>
-  (await openInput(`input/day${day}.txt`))
-    .split("\n\n")
-    .map((line) => line.trim());
+  (await openInput(day)).split("\n\n").map((line) => line.trim());
 
 export const printPart = (part: number, result: number) => {
   console.log(`Part ${part}: ${result}`);
