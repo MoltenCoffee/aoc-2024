@@ -8,29 +8,29 @@ const getFurthestFileBlockIds = (
   availableBlocks: number,
   fileBlockIds: number[] = []
 ) => {
-  if (diskMap[furthestAvailableFile] === 0) furthestAvailableFile -= 2;
+  while (availableBlocks > 0) {
+    if (diskMap[furthestAvailableFile] === 0) furthestAvailableFile -= 2;
 
-  const fileBlockId = Math.ceil(furthestAvailableFile / 2);
+    const fileBlockId = Math.ceil(furthestAvailableFile / 2);
 
-  if (diskMap[furthestAvailableFile] >= availableBlocks) {
-    diskMap[furthestAvailableFile] -= availableBlocks;
-    for (let i = 0; i < availableBlocks; i++) {
+    if (diskMap[furthestAvailableFile] >= availableBlocks) {
+      diskMap[furthestAvailableFile] -= availableBlocks;
+      for (let i = 0; i < availableBlocks; i++) {
+        fileBlockIds.push(fileBlockId);
+      }
+      return fileBlockIds;
+    }
+
+    const fileBlocksAvailable = diskMap[furthestAvailableFile];
+    diskMap[furthestAvailableFile] = 0;
+
+    for (let i = 0; i < fileBlocksAvailable; i++) {
       fileBlockIds.push(fileBlockId);
     }
-    return fileBlockIds;
+
+    availableBlocks -= fileBlocksAvailable;
   }
-
-  const fileBlocksAvailable = diskMap[furthestAvailableFile];
-  diskMap[furthestAvailableFile] = 0;
-
-  for (let i = 0; i < fileBlocksAvailable; i++) {
-    fileBlockIds.push(fileBlockId);
-  }
-
-  return getFurthestFileBlockIds(
-    availableBlocks - fileBlocksAvailable,
-    fileBlockIds
-  );
+  return fileBlockIds;
 };
 
 let diskIndex = 0;
